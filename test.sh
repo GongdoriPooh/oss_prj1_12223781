@@ -1,7 +1,7 @@
 #! /bin/bash
 getDataByID() {
 	read -p "Please enter 'movie id'(1~1682):" id
-	echo ""
+	echo
 	awk -v n=$id 'n==NR {print $0}' $1
 }
 getDataByGenre() {
@@ -14,6 +14,7 @@ getDataByGenre() {
 }
 getAverageByID() {	
 	read -p "Please enter 'movie id'(1~1682):" id
+
 	awk '
 	BEGIN {
 		cnt=0
@@ -41,7 +42,7 @@ getUserData() {
 	if [ "$ans" = "y" ]
 	then
 		echo ""
-		sed -E 's/M[^\|]*/male/' $1 | sed -E 's/F[^\|]*/female/'| sed -E 's/([0-9]+)\|([0-9]+)\|(.*)\|(.*)\|(.*)/user \1 is \1 years old \3 \4/'| head -n 10
+		sed -E 's/M[^\|]*/male/' $1 | sed -E 's/F[^\|]*/female/'| sed -E 's/([0-9]+)\|([0-9]+)\|(.*)\|(.*)\|(.*)/user \1 is \2 years old \3 \4/'| head -n 10
 	fi
 }
 changeDateFormat() {
@@ -90,7 +91,14 @@ echo --------------------------
 while true
 do
 read -p "Enter your Choice [ 1-9 ] " task
-echo ""
+
+if [ $task == 9 ]
+then
+	echo "Bye!"
+	exit 0
+fi
+
+echo
 case $task in
 	1)
 		getDataByID $1
@@ -116,9 +124,8 @@ case $task in
 	8)
 		getAverageRatingMovies $2 $3
 		;;
-	9)
-		echo Bye!
-		exit 0
+	*)
+		echo "Invalid value! Please enter again."
 		;;
 esac
 	echo ""
